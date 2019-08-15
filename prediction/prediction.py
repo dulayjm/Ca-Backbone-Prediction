@@ -57,7 +57,7 @@ def run_predictions(input_path, output_path, thresholds_file, num_skip, check_ex
                    for emdb_id in filter(lambda d: os.path.isdir(input_path + d), os.listdir(input_path))]
 
     start_time = time()
-    max_processes_allowed_to_access_tensorflow = 4
+    max_processes_allowed_to_access_tensorflow = 1
     semaphore = Semaphore(min(min(cpu_count(), len(params_list)), max_processes_allowed_to_access_tensorflow))
     pool = Pool(min(cpu_count(), len(params_list)), initializer=init_child, initargs=(semaphore,))
     results = pool.map(run_prediction, params_list)

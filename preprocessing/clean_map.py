@@ -62,6 +62,7 @@ def execute(paths):
 
     chimera_run(paths, [
         'open %s' % paths['input'],
+        'volume #0 level %f' % get_threshold(paths),
         'cofr models',
         'cofr fixed',
         'open %s' % paths['bounding_box'],
@@ -69,7 +70,7 @@ def execute(paths):
         'write relative #0 #1 %s' % paths['bounding_box_centered'],
         'close #1',
         'open %s' % paths['bounding_box_centered'],
-        'molmap #1 6 gridSpacing 1',
+        'molmap #1 1 gridSpacing 1',
         'vop resample #0 onGrid #1.1',
         'volume #2 save %s' % paths['cleaned_map'],
         'volume #2 level %f' % get_threshold(paths),
