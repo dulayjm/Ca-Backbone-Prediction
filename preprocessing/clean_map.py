@@ -35,18 +35,13 @@ def execute(paths):
     input_map = mrcfile.open(paths['input'])
     input_data = deepcopy(input_map.data)
     input_data[input_data < get_threshold(paths)] = 0
-    voxel_size = input_map.voxel_size
 
     x_is, y_is, z_is = np.nonzero(input_data)
     x_is, y_is, z_is = sorted(x_is), sorted(y_is), sorted(z_is)
 
     atoms = [
-        [x_is[0], 0, 0],
-        [x_is[-1], 0, 0],
-        [0, y_is[0], 0],
-        [0, y_is[-1], 0],
-        [0, 0, z_is[0]],
-        [0, 0, z_is[-1]]
+        [x_is[0], y_is[0], z_is[0]],
+        [x_is[-1], y_is[-1], z_is[-1]],
     ]
 
     with open(paths['bounding_box'], 'w') as fp:
@@ -57,7 +52,7 @@ def execute(paths):
                 file=fp,
                 type='ATOM',
                 chain='A',
-                node=np.array([atom[2] / voxel_size.x, atom[1] / voxel_size.y, atom[0] / voxel_size.z]),
+                node=np.array([atom[2], atom[1], atom[0]]),
                 seqnum=n
             )
 
