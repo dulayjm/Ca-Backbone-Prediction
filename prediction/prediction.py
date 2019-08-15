@@ -17,9 +17,9 @@ import postprocessing as post
 
 # List contains every prediction step that is executed in order to produce
 # the final prediction
-PREDICTION_PIPELINE = [   
-    pre.clean_map,
+PREDICTION_PIPELINE = [
     pre.find_threshold,
+    pre.clean_map,
     pre.normalize_map,
     cnn.predict_with_module,
     post.build_backbone_trace,
@@ -108,6 +108,7 @@ def run_prediction(params):
             else:
                 prediction_step.execute(paths)
         except BaseException:
+            print('---> CRASHED <--- @ EMD_ID:' + emdb_id)
             exc_info = sys.exc_info()
             traceback.print_exception(*exc_info)
 
