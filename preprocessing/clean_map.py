@@ -36,6 +36,7 @@ def execute(paths):
     input_data = deepcopy(input_map.data)
     input_data[input_data < get_threshold(paths)] = 0
     voxel_size = input_map.voxel_size
+    origin = input_map.header.origin
 
     x_is, y_is, z_is = np.nonzero(input_data)
     x_is, y_is, z_is = sorted(x_is), sorted(y_is), sorted(z_is)
@@ -53,29 +54,29 @@ def execute(paths):
                 file=fp,
                 type='ATOM',
                 chain='A',
-                node=np.array([atom[2] * voxel_size.x, atom[1] * voxel_size.y, atom[0]] * voxel_size.z),
+                node=np.array([(atom[2] + input_map.header.nxstart) * voxel_size.x + origin.x,
+                               (atom[1] + input_map.header.nystart) * voxel_size.y + origin.y,
+                               (atom[0] + input_map.header.nzstart) * voxel_size.z + origin.z]),
                 seqnum=n
             )
 
     chimera_run(paths, [
         'open %s' % paths['input'],
         'volume #0 level %f' % get_threshold(paths),
-        'cofr models',
-        'cofr fixed',
         'open %s' % paths['bounding_box'],
-        'mov cofr mod #1',
-        'write relative #0 #1 %s' % paths['bounding_box_centered'],
-        'close #1',
-        'open %s' % paths['bounding_box_centered'],
         'molmap #1 1 gridSpacing 1',
         'vop resample #0 onGrid #1.1',
         'volume #2 save %s' % paths['cleaned_map'],
-        'volume #2 level %f' % get_threshold(paths),
-        'volume #2 step 1',
-        'sop hideDust #2 size 30',
-        'sop invertShown #2',
-        'mask #2 #2 invert true',
-        'volume #3 save %s' % paths['cleaned_map']
+    ])
+
+    chimera_run(paths, [
+        'open %s' % paths['cleaned_map'],
+        'volume #0 level %f' % get_threshold(paths),
+        'volume #0 step 1',
+        'sop hideDust #0 size 30',
+        'sop invertShown #0',
+        'mask #0 #0 invert true',
+        'volume #1 save %s' % paths['cleaned_map']
     ])
 
 
