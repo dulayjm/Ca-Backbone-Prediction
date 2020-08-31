@@ -91,8 +91,8 @@ Additionally, a **results.xls** file is created in the output folder containing 
 
 
 
-## Sequence Mapping (Updating)
-The code which maps protein sequences into the predicted Cα traces can be found [here](https://github.com/DrJieHou/CaTrace2Seq/). We put the paper's version in the the folder 'sequence_mapping', users can directly setup program in this folder. The latest version can be found at [here](https://github.com/DrJieHou/CaTrace2Seq/).
+## Sequence Mapping
+The code which maps protein sequences into the predicted Cα traces can be found in the the folder 'sequence_mapping', users can directly setup program in this folder.
 
 Test Environment
 --------------------------------------------------------------------------------------
