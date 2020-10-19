@@ -24,13 +24,15 @@ global Topic
 global topic
 global model
 
+# changint some
+
 restore_model = False
-batch_size = 5
-learning_rate = 1e-4
+batch_size = 10
+learning_rate = 1e-3
 box_size = 64 #64^3
 
 start_epoc = 0
-end_epochs = 100
+end_epochs = 10
 
 base_data_folder_path = 'D:/data/packaged_data/'
 classes = ['Other', 'Ca']
